@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MediaVault{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        /* 1. Milk White Background */
+        body {
+            background-color: #f4f6f9; 
+            color: #334155;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        /* 2. Crisp White Content Cards */
+        .content-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 3. Deep Blue Navigation */
+        .navbar-deep-blue {
+            background-color: #0b2447 !important; /* Deep Corporate Blue */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-deep-blue .nav-link { color: #cbd5e1 !important; font-weight: 500; }
+        .navbar-deep-blue .nav-link:hover { color: #ffffff !important; }
+        .navbar-brand { letter-spacing: 0.5px; }
+
+        /* Custom text colors to replace the old dark mode ones */
+        .text-deep-blue { color: #0b2447 !important; }
+        .text-accent { color: #195fae !important; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-deep-blue sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'dashboard' %}">
+                <i class="bi bi-cloud-check-fill text-accent me-1"></i> MediaVault
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">My Drive</a></li>
+                    {% endif %}
+                </ul>
+                
+                <ul class="navbar-nav align-items-lg-center">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item me-lg-4 mb-3 mb-lg-0 mt-3 mt-lg-0">
+                            <form action="{% url 'search' %}" method="GET" class="d-flex">
+                                <input class="form-control form-control-sm border-0 shadow-none" style="background-color: #193a6f; color: white;" type="search" name="q" placeholder="Search vault..." value="{{ request.GET.q }}">
+                                <button class="btn btn-sm ms-2 fw-bold" style="background-color: #e2e8f0; color: #0b2447;" type="submit"><i class="bi bi-search"></i></button>
+                            </form>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <span class="nav-link text-white"><i class="bi bi-person-circle"></i> {{ user.username }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm mt-1 ms-lg-3 fw-bold shadow-sm">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4 mb-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show content-card border-start border-4 border-{{ message.tags }}" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

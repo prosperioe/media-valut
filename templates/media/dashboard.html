@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - MediaVault{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+    <h2 class="fw-bold text-accent"><i class="bi bi-hdd-network"></i> My Drive</h2>
+    <div>
+        <a href="{% url 'upload_file' %}" class="btn btn-info fw-bold me-2"><i class="bi bi-cloud-upload"></i> Upload</a>
+        <a href="{% url 'create_folder' %}" class="btn btn-outline-info"><i class="bi bi-folder-plus"></i> New Folder</a>
+    </div>
+</div>
+
+<h5 class="text-secondary mb-3 mt-4">Folders</h5>
+<div class="row g-3 mb-5">
+    {% for folder in folders %}
+    <div class="col-md-3 col-sm-6">
+        <div class="content-card p-3 d-flex align-items-center position-relative">
+            <i class="bi bi-folder-fill text-accent fs-3 me-3"></i>
+            <h6 class="mb-0 text-truncate text-deep-blue">
+                <a href="{% url 'folder_detail' folder.id %}" class="text-deep-blue text-decoration-none stretched-link">{{ folder.name }}</a>
+            </h6>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-secondary small">No folders created yet.</p>
+    {% endfor %}
+</div>
+
+<h5 class="text-secondary mb-3 mt-4">Recent Files</h5>
+<div class="row g-3">
+    {% for file in files %}
+    <div class="col-md-3 col-sm-6">
+        <div class="content-card p-3 position-relative">
+            <div class="d-flex align-items-center mb-2">
+                {% if file.file_type in 'jpg,jpeg,png,gif' %}
+                    <i class="bi bi-file-image text-success fs-3 me-3"></i>
+                {% elif file.file_type == 'pdf' %}
+                    <i class="bi bi-file-earmark-pdf text-danger fs-3 me-3"></i>
+                {% elif file.file_type == 'mp4' %}
+                    <i class="bi bi-file-play text-warning fs-3 me-3"></i>
+                {% else %}
+                    <i class="bi bi-file-earmark-text text-accent fs-3 me-3"></i>
+                {% endif %}
+                
+                <h6 class="mb-0 text-truncate text-deep-blue" title="{{ file.title }}">
+                    <a href="{% url 'file_detail' file.id %}" class="text-deep-blue text-decoration-none stretched-link">{{ file.title }}</a>
+                </h6>
+            </div>
+            <small class="text-secondary">{{ file.size|filesizeformat }} • {{ file.file_type|upper }}</small>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-secondary small">No files in the root directory yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

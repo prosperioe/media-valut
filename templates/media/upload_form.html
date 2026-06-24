@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Upload File - MediaVault{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="content-card p-4 p-md-5">
+            <h4 class="fw-bold mb-4"><i class="bi bi-cloud-arrow-up text-accent"></i> Secure File Upload</h4>
+            
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-info fw-bold">
+                        <i class="bi bi-upload"></i> Upload to Vault
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-3 text-center">
+                <small class="text-secondary"><i class="bi bi-shield-check"></i> Max size: 10MB. Allowed: Images, PDFs, Videos, Docs.</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
