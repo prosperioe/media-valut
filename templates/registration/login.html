@@ -7,23 +7,59 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-6 col-lg-5">
         <div class="content-card p-4 p-md-5">
-            <h3 class="fw-bold mb-4 text-center">Secure Login</h3>
+            <h3 class="fw-bold mb-4 text-center text-deep-blue">Welcome Back</h3>
             
-            {% if form.errors %}
-                <div class="alert alert-danger p-2 text-center small">
-                    Invalid username or password. Please try again.
-                </div>
-            {% endif %}
-
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-info w-100 mt-3 fw-bold">Authenticate</button>
+                <button type="submit" class="btn btn-info w-100 mt-4 fw-bold shadow-sm">Log In</button>
             </form>
+            
             <div class="text-center mt-4">
-                <small class="text-secondary">Need an account? <a href="{% url 'register' %}" class="text-accent text-decoration-none">Register here</a>.</small>
+                <small class="text-secondary">Don't have an account? <a href="{% url 'register' %}" class="text-accent text-decoration-none">Sign up here</a>.</small>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Find the password input on the login page
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    
+    passwordInputs.forEach(function(input) {
+        // 2. Create the Bootstrap input-group wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-group';
+        
+        // 3. Wrap the input inside the new div
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+        
+        // 4. Create the toggle button
+        const button = document.createElement('button');
+        button.className = 'btn btn-outline-secondary';
+        button.type = 'button';
+        
+        // 5. Create the eye icon
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-eye';
+        button.appendChild(icon);
+        
+        // 6. Add the click logic
+        button.addEventListener('click', function() {
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        });
+        
+        // 7. Attach the button to the input group
+        wrapper.appendChild(button);
+    });
+});
+</script>
 {% endblock %}
