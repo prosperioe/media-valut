@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Folder, MediaFile
 from .forms import FolderForm, MediaFileForm
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import FileResponse, Http404
+import os
 
 def register(request):
     # If a logged-in user tries to visit the register page, redirect them
@@ -160,3 +162,18 @@ def search(request):
         'folders': folders,
         'files': files
     })
+
+@login_required
+def secure_download(request, pk):
+    #STRICT SECURITY: Verify the file belongs to the logged-in user
+    media_file = get_object_or_404(MediaFile, pk=pk, user=request.user)
+    
+    # Get the physical path on the hard drive
+    file_path = media_file.file.path
+    
+    #Check if the physical file actually exists
+    if os.path.exists(file_path):
+        # FileResponse efficiently streams the file in chunks to save memory
+        return FileResponse(open(file_path, 'rb'))
+    else:
+        raise Http404("The file could not be found on the server.")

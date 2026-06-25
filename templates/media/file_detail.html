@@ -50,8 +50,8 @@
                 <a href="{% url 'delete_file' file.id %}" class="btn btn-outline-danger btn-sm">
                     <i class="bi bi-trash"></i> Delete files
                 </a>
-                <a href="{{ file.file.url }}" class="btn btn-info fw-bold" target="_blank" rel="noopener noreferrer">
-                    <i class="bi bi-cloud-download"></i> View / Download
+                <a href="{% url 'secure_download' file.id %}" class="btn btn-info fw-bold shadow-sm" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-cloud-download"></i> View / Download
                 </a>
             </div>
         </div>
