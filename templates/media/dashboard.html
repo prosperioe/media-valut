@@ -4,11 +4,17 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
-    <h2 class="fw-bold text-accent"><i class="bi bi-hdd-network"></i> My Drive</h2>
-    <div>
+    <h2 class="fw-bold text-deep-blue"><i class="bi bi-hdd-network"></i> My Drive</h2>
+    
+    <div class="d-none d-lg-block">
         <a href="{% url 'upload_file' %}" class="btn btn-info fw-bold me-2"><i class="bi bi-cloud-upload"></i> Upload</a>
         <a href="{% url 'create_folder' %}" class="btn btn-outline-info"><i class="bi bi-folder-plus"></i> New Folder</a>
     </div>
+</div>
+
+<div class="d-lg-none fixed-bottom p-3 bg-light shadow-lg d-flex justify-content-between">
+    <a href="{% url 'create_folder' %}" class="btn btn-outline-info flex-fill me-2"><i class="bi bi-folder-plus"></i> New Folder</a>
+    <a href="{% url 'upload_file' %}" class="btn btn-info fw-bold flex-fill"><i class="bi bi-cloud-upload"></i> Upload</a>
 </div>
 
 <h5 class="text-secondary mb-3 mt-4">Folders</h5>

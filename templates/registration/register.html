@@ -7,7 +7,7 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-6 col-lg-5">
         <div class="content-card p-4 p-md-5">
-            <h3 class="fw-bold mb-4 text-center">Create Account</h3>
+            <h3 class="fw-bold mb-4 text-center text-deep-blue">Create Account</h3>
             <form method="post" novalidate>
                 {% csrf_token %}
                 {{ form|crispy }}
@@ -19,4 +19,45 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Find all password inputs on the page
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    
+    passwordInputs.forEach(function(input) {
+        // 2. Create the Bootstrap input-group wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-group';
+        
+        // 3. Wrap the input inside the new div
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+        
+        // 4. Create the toggle button
+        const button = document.createElement('button');
+        button.className = 'btn btn-outline-secondary';
+        button.type = 'button';
+        
+        // 5. Create the eye icon
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-eye';
+        button.appendChild(icon);
+        
+        // 6. Add the click logic
+        button.addEventListener('click', function() {
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        });
+        
+        // 7. Attach the button to the input group
+        wrapper.appendChild(button);
+    });
+});
+</script>
 {% endblock %}
